@@ -1,0 +1,127 @@
+#!/usr/bin/env node
+var fs = require('fs')
+
+var onesizeCss = require("../sources/onesize-css")
+
+
+var args = process.argv.slice( process.argv[0].match(/node$/)? 2:1 );
+
+var options = { 
+	paths: [],
+};
+
+
+var output = false
+
+var isTrue = function(arg) {
+    var match = /^((on|true|y|yes)|(off|false|n|no))$/i.exec(arg);
+    if (!match) {
+        throw new Error( "Unknown boolean `" + arg + "`." )
+    }
+    return !!(match[2]);
+};
+
+var isGoodArgs = function(arg, option) {
+    if (!option) {
+        throw new Error( arg + " option requires a parameter" )
+    }
+    return true;
+};
+
+try{
+		 args = args.filter(function (arg) {
+		    var match;
+ 
+ 		    if (match = arg.match(/^--?([a-z][0-9a-z-]*)(?:=(.*))?$/i)) { 
+		    	arg = match[1] 
+		    }
+		    else { 
+		    	return arg 
+		    }
+
+		    switch (arg) {
+		        case 'v':
+		        case 'version':
+		            console.log(process.argv[1].split(/[\/\\]/).pop() + ' ' + onesizeCss.version.join('.') );
+		            process.exit(code=0)
+		        case 'verbose':
+		            options.verbose = true;
+		            break;
+		        case 'mini':
+		        case 'minify':
+		        case 'compress':
+		            if ( match[2] ) {
+		            	options.minify = isTrue( match[2] )
+		            }else
+		            	options.minify = true;
+		            break;
+
+		        case 'w':
+		        case 'width':
+
+		            if (isGoodArgs(arg, match[2])) {
+		                
+		                options.width = parseInt(match[2], 10);
+		                if (isNaN(options.width) || options.width <= 0) {
+							throw new Error("Invalid width: `" +match[2]+ "`. ")
+		                }
+		            }
+		            break;
+
+		        case 'pf':
+		        case 'prefix':
+		        case 'cssprefix':
+		            if (isGoodArgs(arg, match[2])) {
+		                  options.cssprefix = match[2];
+		            }
+		            break;
+
+		        case 'o':
+		        case 'output':
+		            if (isGoodArgs(arg, match[2])) {
+		                output = match[2];
+		            }
+		            break;
+
+		        default:
+		            throw new Error("Unknown option "+ arg +".")
+		            break;
+		    }
+		});
+
+
+				
+
+		var cosm = new onesizeCss( options )
+		args.forEach(function(file){
+			cosm.addFile(file);	
+		})
+
+		cosm.getResultCss( function(err, code){
+			if(err){
+				console.log(err)
+				process.exit(code=-1)
+			}else{
+				if(output){
+					fs.writeFile(output, code, {encoding: 'utf-8'}, function(err,data){
+						if(err){
+							console.log(err)
+							process.exit(code=-1)
+						}else{
+							console.log("done")
+						}
+					})
+				}else{
+					console.log(code)
+				}
+			}
+		})
+
+
+
+}catch(e){
+	console.log(e.message)
+	process.exit(code=-1)
+}
+
+

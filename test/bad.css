@@ -1,0 +1,11 @@
+@media screen and (min-width: 1000px){
+	div.a{
+		background:red;
+	}
+}
+
+span.b{
+	background:blue;
+
+
+/*bad css*/

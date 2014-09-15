@@ -1,0 +1,45 @@
+{
+  "name": "onesize-css",
+  "version": "0.0.1",
+  "description": "Generate CSS for specific screen size from responsive CSS files.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec ./test/index.js"
+  },
+  "bin" : {
+      "onesize-css": "./bin/onesize-css"
+    },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hereblur/css-onesize-media.git"
+  },
+  "keywords": [
+    "CSS",
+    "Internet Explorer",
+    "anti responsive",
+    "disable responsive",
+    "@media",
+    "ie7",
+    "ie8",
+    "responsive design"
+  ],
+  "author": "Supasak Sutha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hereblur/css-onesize-media/issues"
+  },
+  "homepage": "https://github.com/hereblur/css-onesize-media",
+  "dependencies" : { 
+      "less" : "*",
+      "node-sass": "*",
+      "css" : "*",
+      "css-mediaquery" : "*",
+      "q" : "*",
+      "underscore" : "*"
+  },
+  "devDependencies": {
+     "mocha": "*",
+     "should": ">= 0.0.1"
+  }
+  
+}
