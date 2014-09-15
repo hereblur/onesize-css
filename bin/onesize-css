@@ -28,6 +28,25 @@ var isGoodArgs = function(arg, option) {
     return true;
 };
 
+
+
+var usage = function(){
+	console.log(process.argv[1].split(/[\/\\]/).pop() + ' ' + onesizeCss.version.join('.') );
+	console.log("Usage: " +process.argv[1].split(/[\/\\]/).pop() + " [options option=parameter ...] <source> [more-source ...]");
+	console.log("");
+	console.log("options:");
+	console.log("  <source>                 CSS file(s), also supported less and sass.");
+	console.log("  -h, --help               Print help (this message) and exit.");
+	console.log("  -mini, --minify          Minify output.");
+	console.log("  -w, --width          	Virtual screen width for matching the rules. default is 1024. ");
+	console.log("  -pf, --prefix            Prefix for generated CSS selector.");
+	console.log("  -o, --output             Output filename. If no specify, it's write to stdout.");
+	console.log("  -v, --version            Print version number and exit.");
+	console.log("  --verbose                Be verbose.");
+	console.log("");
+	console.log("Issues: https://github.com/hereblur/onesize-css/issues");	
+}
+
 try{
 		 args = args.filter(function (arg) {
 		    var match;
@@ -40,6 +59,11 @@ try{
 		    }
 
 		    switch (arg) {
+		    	case 'h': 
+		    	case 'help' :
+		    		usage();
+		    		process.exit(code=0)
+		    		break;
 		        case 'v':
 		        case 'version':
 		            console.log(process.argv[1].split(/[\/\\]/).pop() + ' ' + onesizeCss.version.join('.') );
@@ -90,7 +114,9 @@ try{
 		});
 
 
-				
+		if(args.length <=0){
+			throw new Error("No input file.")
+		}
 
 		var cosm = new onesizeCss( options )
 		args.forEach(function(file){
@@ -99,13 +125,15 @@ try{
 
 		cosm.getResultCss( function(err, code){
 			if(err){
-				console.log(err)
+				console.log(err.message)
+				console.log('`' + process.argv[1].split(/[\/\\]/).pop() + ' --help` for help');
 				process.exit(code=-1)
 			}else{
 				if(output){
 					fs.writeFile(output, code, {encoding: 'utf-8'}, function(err,data){
 						if(err){
-							console.log(err)
+							console.log(err.message)
+							console.log('`' + process.argv[1].split(/[\/\\]/).pop() + ' --help` for help');
 							process.exit(code=-1)
 						}else{
 							console.log("done")
@@ -121,7 +149,7 @@ try{
 
 }catch(e){
 	console.log(e.message)
+	console.log('`' + process.argv[1].split(/[\/\\]/).pop() + ' --help` for help');
 	process.exit(code=-1)
 }
-
 
