@@ -1,1 +1,1 @@
-module.exports = require("../sources/onesize-css")
+module.exports = require("./sources/onesize-css")
