@@ -1,4 +1,4 @@
-var VERSION = [0,0,"1c"]
+var VERSION = [0,0,"1d"]
 
 var less = require("less"),
 	css = require('css'),

@@ -1,6 +1,6 @@
 {
   "name": "onesize-css",
-  "version": "0.0.1c",
+  "version": "0.0.1d",
   "description": "Generate CSS for specific screen size from responsive CSS files.",
   "main": "index.js",
   "scripts": {
