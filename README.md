@@ -3,14 +3,14 @@
 
 ###Generate CSS for specific screen size from responsive CSS files for IE6-8.
 
-IE8(when I said IE8, I mean IE8 and below ) are not support CSS3 Media Queries at all. And this is a big headache for all web developers.
+IE8(when I said IE8, I mean IE8 and below ) are not support CSS3 Media Queries at all. And this is a big headache for all web developers especially for mobile-first project.
 
 Javascript solutions like Respond.js or css3-mediaqueries-js are awesome. But sometimes, IE8 are slow and poor performance on Javascript already, I just don't want to push more works on him.
  
 The Question is: Are CSS3 Media Queries and responsive design really needed on IE8? 
 I don't think so. How many people have IE8 on small screen device?
 
-So, The idea of this script is to get rid of CSS3 Media Queries on IE8. Let it work and keep it stay at fullsize no matter what the browser size is.
+So, The idea of this script is to get rid of CSS3 Media Queries on IE8. Let it work and keep the desktop layout no matter what the browser size is.
 
 The script generate a new seperate CSS file from your existing CSS files.
 
@@ -40,10 +40,10 @@ You can generate CSS file directly from command line. Possible parameters are:
 >>Minify output.
 
 >###-w, --width          	
->>Virtual screen width for matching the `@media` rules. It is the size to let IE8 stick with. default is 1024.
+>>Virtual screen width for matching the `@media` rules. It is usually the minimum size that your webpage start showing in the desktop version. default is 1024.
 
 >###-pf, --prefix            
->>Prefix for generated CSS selector. We use this to boost up the power of selector. As you may known, IE8 are not support media queries, so we need something to make the generated selectors more powerful.
+>>In the mobile-first webpage. IE8 always show the mobile version, so we need something to make the generated selectors more powerful. to override the mobile-first css.  So we use `id` and `class` on `BODY` tag to make it generated CSS more specificity. [https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity].
 
 >###--verbose                
 >>Be verbose.
@@ -99,22 +99,22 @@ We receiving generated CSS in the asynchronous fashion. And that's it. You got a
 ##Using the generated CSS on your webpage.
 Most of the time, We will use this css for IE8 only. I assumed all of you are familiar with HTML Conditional comment, So:
 ```html
-    <!--[if lte IE8]>
+    <!--[if lte IE 8]>
     <link rel="stylesheet" type="text/css" href="generated-ie8.css" />
     <![endif]-->
 ```
 ####And the BODY tag.
 If you look into the generated CSS file, You will see that everysingle selectors are leading by `BODY#onesize-media.onesize-media` or something else that you specify by `--prefix` or `cssprefix` parameter. This prefix is for making sure that our generated CSS is more powerful and harder to be overridden by something else. so, we have to make our `BODY` to get along with our generated css by apply `id` and `class` to match the prefix.
 ```html
-    <!--[if lte IE8]>
+    <!--[if lte IE 8]>
         <BODY id="onesize-media" class="onesize-media">
     <![endif]-->
-    <!--[if gt IE8]>
+    <!--[if gt IE 8]>
         <BODY>
     <![endif]-->
-    <!--[if !IE]>
+    <!--[if !IE]>-->
         <BODY>
-    <![endif]-->
+    <!--<![endif]-->
 ```
 
 ##How it works?
@@ -158,13 +158,13 @@ As you can see the `width`(1024px) only matching 2 rules. and rules outside `@me
  
 
 
-
-
-
 ##Issues
-
+- Tested on IE8 only, will test on older version soon.
+- Make sure your `BODY` tag on IE8 is matching the `prefix` parameter. 
 - This script using `cssprefix` to make selectors stronger. but sometimes it's not enough. There're ways to overide the generated css, like using `#id` or `!important`. so, please avoid it.
 - `@font-face`. This just not work. please use them in seperate files.
+- This fix only media-query related only. not fixing other ie8 problems like html5tag, inline-block, border-radius, etc.
+- This script fix CSS only, not fixing any javascript problem at all.
 - Other bugs, issues or suggestion please welcome [https://github.com/hereblur/onesize-css/issues].
 
 

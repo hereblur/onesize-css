@@ -21,7 +21,8 @@
     "@media",
     "ie7",
     "ie8",
-    "responsive design"
+    "responsive design",
+    "mobile-first"
   ],
   "author": "Supasak Sutha",
   "license": "ISC",
